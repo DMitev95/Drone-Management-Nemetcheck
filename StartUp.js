@@ -1,76 +1,10 @@
 import { DeliveryPlanner } from "./DeliveryPlanner.js";
+import { createRequire } from "module";
 
-const input = {
-  "map-top-right-coordinate": { x: 280, y: 280 },
-  products: [
-    "tomatoes",
-    "cucumber",
-    "cheese",
-    "milk",
-    "ham",
-    "eggs",
-    "bananas",
-    "carrots",
-    "bread",
-    "onion",
-  ],
-  warehouses: [
-    { x: 100, y: 100, name: "Left warehouse" },
-    { x: 200, y: 200, name: "Right warehouse" },
-  ],
-  customers: [
-    { id: 1, name: "John Stocks", coordinates: { x: 10, y: 10 } },
-    { id: 2, name: "Alfred Derrick", coordinates: { x: 213, y: 187 } },
-    { id: 3, name: "Richard Brune", coordinates: { x: 108, y: 15 } },
-    { id: 4, name: "Mitko", coordinates: { x: 25, y: 3 } },
-  ],
-  orders: [
-    {
-      customerId: 1,
-      productList: { tomatoes: 5, cucumber: 5, cheese: 1, milk: 2 },
-    },
-    {
-      customerId: 1,
-      productList: { eggs: 10, cucumber: 2, cheese: 1, ham: 2 },
-    },
-
-    {
-      customerId: 2,
-      productList: {
-        eggs: 10,
-        tomatoes: 2,
-        bananas: 5,
-        carrots: 15,
-        bread: 2,
-        onion: 6,
-      },
-    },
-    {
-      customerId: 3,
-      productList: { eggs: 5, cucumber: 5, cheese: 1, tomatoes: 2 },
-    },
-    {
-      customerId: 3,
-      productList: { eggs: 10, tomatoes: 2, ham: 1, bananas: 2 },
-    },
-    {
-      customerId: 2,
-      productList: {
-        bananas: 10,
-        carrots: 2,
-        onion: 5,
-        cucumber: 15,
-        cheese: 2,
-        bread: 6,
-      },
-    },
-  ],
-  typesOfDrones: [
-    { capacity: "500W", consumption: "1W" },
-    { capacity: "1kW", consumption: "3W" },
-    { capacity: "2kW", consumption: "5W" },
-  ],
-};
+const require = createRequire(import.meta.url);
+const fs = require("fs");
+let data = fs.readFileSync("input.json");
+let input = JSON.parse(data);
 
 // Create DeliveryPlanner instance
 const deliveryPlanner = new DeliveryPlanner(
@@ -85,18 +19,24 @@ const deliveryPlanner = new DeliveryPlanner(
 // Start the simulation
 deliveryPlanner.calculateTotalTime();
 
+// addingNeworder() {
+//   deliveryPlanner.addNewOrder(4, { eggs: 8 })
+// };
+
 // Dynamically add a new order during the simulation
 //This is not right!!!
-setTimeout(() => {
-  const deliveryPlanner = new DeliveryPlanner(
-    input["map-top-right-coordinate"],
-    input.products,
-    input.warehouses,
-    input.customers,
-    input.orders,
-    input.typesOfDrones
-  );
+// setTimeout(() => {
+//   const deliveryPlanner = new DeliveryPlanner(
+//     input["map-top-right-coordinate"],
+//     input.products,
+//     input.warehouses,
+//     input.customers,
+//     input.orders,
+//     input.typesOfDrones
+//   );
 
-  // Start the simulation
-  deliveryPlanner.calculateTotalTime();
-}, 3000); // Add a new order after 5 seconds
+//   // Start the simulation
+//   deliveryPlanner.calculateTotalTime();
+// }, 3000); // Add a new order after 5 seconds
+
+//program / realt или както трябва да е формулата

@@ -28,7 +28,8 @@ export class DeliveryPlanner {
         new Customer(customer.id, customer.name, customer.coordinates)
     );
     this.orders = orders.map(
-      (order) => new Order(order.customerId, order.productList)
+      (order) =>
+        new Order(order.customerId, "to be delivered", order.productList)
     );
     this.typesOfDrones = typesOfDrones.map(
       (drone) =>
@@ -158,13 +159,14 @@ export class DeliveryPlanner {
   }
 
   // Method to add a new order dynamically
-  addNewOrder(customerId, productList) {
+  addNewOrder(customerName, customerId, productList) {
     const newOrder = new Order(customerId, productList);
     this.orders.push(newOrder);
-    console.log(
-      `New order added for Customer ${
-        this.customers.find((customer) => customer.id === customerId).name
-      }`
-    );
+    return `The new order for customer ${customerName} with product ${productList}is added in queue!`;
+    // console.log(
+    //   `New order added for Customer ${
+    //     this.customers.find((customer) => customer.id === customerId).name
+    //   }`
+    // );
   }
 }

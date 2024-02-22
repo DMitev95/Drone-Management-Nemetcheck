@@ -1,4 +1,17 @@
 {
   "main": "StartUp.js",
-  "type": "module"
+  "type": "module",
+  "name": "dimitar-mitev-nemetschek-rise-2024",
+  "description": "To make it easy for you to get started with GitLab, here's a list of recommended next steps.",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.4"
+  }
 }
