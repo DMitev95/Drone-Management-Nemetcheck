@@ -55,8 +55,13 @@ export class DeliveryPlanner {
           .coordinates
       );
 
+      // This whole div could be moved as a separate function
+      // this.chooseDroneType(travelTime) !== null is calculated too many times - cache it in constant above as we use it both into if - else
+
       if (order.customerId === this.orders[this.orders.length - 1].customerId) {
         if (this.chooseDroneType(travelTime) !== null) {
+          // Move this constant up and choose it into if
+          // 
           const choosenDrone = this.chooseDroneType(travelTime);
           totalTime = totalTime + travelTime + pickupTime;
           console.log(
@@ -67,6 +72,7 @@ export class DeliveryPlanner {
             }, with drone ${choosenDrone.capacity}!`
           );
         } else {
+          // Typos
           console.log("Dont have avable drones at the moment!");
         }
       } else {
@@ -84,6 +90,7 @@ export class DeliveryPlanner {
             }, with drone ${choosenDrone.capacity}!`
           );
         } else {
+          // Typos
           console.log("Dont have avable drones at the moment!");
         }
       }
@@ -97,6 +104,7 @@ export class DeliveryPlanner {
 
     //Display the result
     console.log(
+      // Typo
       `Averige time for delivery: ${averageTimeForDelivery} minutes!`
     );
     console.log(`Total delivery time: ${Math.round(totalTime)} minutes!`);
@@ -140,9 +148,11 @@ export class DeliveryPlanner {
     const availableDrones = this.typesOfDrones.filter((droneType) =>
       travelTime *
         Number(
+          // Move this into constant above
           droneType.consumption.substring(0, droneType.consumption.length - 1)
         ) <=
       droneType.capacity.includes("kW")
+      // Try to use ParseInt instead of Number constructor
         ? Number(
             droneType.capacity.substring(0, droneType.capacity.length - 1)
           ) * 1000
