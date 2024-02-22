@@ -44,47 +44,45 @@ export class DeliveryPlanner {
   calculateTotalTime() {
     let totalTime = 0;
     const pickupTime = 5; // 5 minutes for picking up the order
-    const deliveryTimeFrameInMinutes = 12 * 60; // Total delivery time per day in minutes
+    const deliveryTimeFrameInMinutes = 12 * 60; // Total delivery time per day in minutes (12 hours multiply by 60 minutes)
 
     this.orders.forEach((order) => {
+      //Locating the nearest warehouse
       const nearestWarehouse = this.findNearestWarehouse(order);
 
-      const travelTime = this.calculateDistance(
-        nearestWarehouse.location,
-        this.customers.find((customer) => customer.id === order.customerId)
-          .coordinates
+      //Finding the customer for the current order
+      const customerForCurrOrder = this.customers.find(
+        (customer) => customer.id === order.customerId
       );
 
+      //Calculating travel time for single order
+      const travelTime = this.calculateDistance(
+        nearestWarehouse.location,
+        customerForCurrOrder.coordinates
+      );
+
+      // Chousing drone by his abttery capacity
+      const choosenDrone = this.chooseDroneType(travelTime);
+
       if (order.customerId === this.orders[this.orders.length - 1].customerId) {
-        if (this.chooseDroneType(travelTime) !== null) {
-          const choosenDrone = this.chooseDroneType(travelTime);
+        if (choosenDrone !== null) {
           totalTime = totalTime + travelTime + pickupTime;
+          const timeToTravel = Math.round(travelTime + pickupTime);
           console.log(
-            `${Math.round(travelTime + pickupTime)} to deliver order from ${
-              this.customers.find(
-                (customer) => customer.id === order.customerId
-              ).name
-            }, with drone ${choosenDrone.capacity}!`
+            `${timeToTravel} to deliver order from ${customerForCurrOrder.name}, with drone ${choosenDrone.capacity}!`
           );
         } else {
-          console.log("Dont have avable drones at the moment!");
+          console.log("Dont have available drones at the moment!");
         }
       } else {
-        //TO DO
-        if (this.chooseDroneType(travelTime) !== null) {
-          const choosenDrone = this.chooseDroneType(travelTime);
+        if (choosenDrone !== null) {
           totalTime = totalTime + travelTime + pickupTime + travelTime;
+          const timeToTravel = Math.round(travelTime + pickupTime);
           console.log(
-            `${Math.round(
-              travelTime + pickupTime
-            )} minutes to deliver order from ${
-              this.customers.find(
-                (customer) => customer.id === order.customerId
-              ).name
-            }, with drone ${choosenDrone.capacity}!`
+            `${timeToTravel} minutes to deliver order from ${customerForCurrOrder.name}, with drone ${choosenDrone.capacity}!`
           );
         } else {
-          console.log("Dont have avable drones at the moment!");
+          console.log("Dont have available drones at the moment!");
         }
       }
     });
@@ -93,15 +91,16 @@ export class DeliveryPlanner {
     const totalDronesRequired = Math.ceil(
       (deliveryTimeFrameInMinutes / totalTime) * this.orders.length
     );
+
+    //Calculate average time for one one delivery
     const averageTimeForDelivery = Math.ceil(totalTime / this.orders.length);
 
     //Display the result
     console.log(
-      `Averige time for delivery: ${averageTimeForDelivery} minutes!`
+      `Average time for delivery: ${averageTimeForDelivery} minutes!`
     );
     console.log(`Total delivery time: ${Math.round(totalTime)} minutes!`);
     console.log(`Total drones will be needed: ${totalDronesRequired} drones!`);
-    // return [totalDronesRequired, Math.round(totalTime)];
   }
 
   findNearestWarehouse(order) {
@@ -136,17 +135,19 @@ export class DeliveryPlanner {
   }
 
   chooseDroneType(travelTime) {
-    // Choose a drone type based on the travel time
+    // Choose a drone type based on the travel time. If drone capacity contains kW I am multiply by 1000 to convert it to W.
     const availableDrones = this.typesOfDrones.filter((droneType) =>
       travelTime *
-        Number(
+        parseInt(
           droneType.consumption.substring(0, droneType.consumption.length - 1)
         ) <=
       droneType.capacity.includes("kW")
-        ? Number(
+        ? parseInt(
             droneType.capacity.substring(0, droneType.capacity.length - 1)
           ) * 1000
-        : Number(droneType.capacity.substring(0, droneType.capacity.length - 1))
+        : parseInt(
+            droneType.capacity.substring(0, droneType.capacity.length - 1)
+          )
     );
 
     if (availableDrones.length > 0) {
@@ -163,10 +164,5 @@ export class DeliveryPlanner {
     const newOrder = new Order(customerId, productList);
     this.orders.push(newOrder);
     return `The new order for customer ${customerName} with product ${productList}is added in queue!`;
-    // console.log(
-    //   `New order added for Customer ${
-    //     this.customers.find((customer) => customer.id === customerId).name
-    //   }`
-    // );
   }
 }
