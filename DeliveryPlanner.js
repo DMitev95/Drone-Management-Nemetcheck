@@ -62,28 +62,23 @@ export class DeliveryPlanner {
       );
 
       // Chousing drone by his abttery capacity
-      const choosenDrone = this.chooseDroneType(travelTime);
+      const chosenDrone = this.choseDroneType(travelTime);
 
-      if (order.customerId === this.orders[this.orders.length - 1].customerId) {
-        if (choosenDrone !== null) {
-          totalTime = totalTime + travelTime + pickupTime;
-          const timeToTravel = Math.round(travelTime + pickupTime);
-          console.log(
-            `${timeToTravel} to deliver order from ${customerForCurrOrder.name}, with drone ${choosenDrone.capacity}!`
-          );
-        } else {
-          console.log("Dont have available drones at the moment!");
+      if (chosenDrone !== null) {
+        totalTime = totalTime + travelTime + pickupTime;
+
+        const timeToTravel = Math.round(travelTime + pickupTime);
+
+        console.log(
+          `${timeToTravel} to deliver order from ${customerForCurrOrder.name}, with drone ${chosenDrone.capacity}!`
+        );
+        if (
+          order.customerId !== this.orders[this.orders.length - 1].customerId
+        ) {
+          totalTime += travelTime;
         }
       } else {
-        if (choosenDrone !== null) {
-          totalTime = totalTime + travelTime + pickupTime + travelTime;
-          const timeToTravel = Math.round(travelTime + pickupTime);
-          console.log(
-            `${timeToTravel} minutes to deliver order from ${customerForCurrOrder.name}, with drone ${choosenDrone.capacity}!`
-          );
-        } else {
-          console.log("Dont have available drones at the moment!");
-        }
+        console.log("Don't have available drones at the moment!");
       }
     });
 
@@ -134,8 +129,8 @@ export class DeliveryPlanner {
     );
   }
 
-  chooseDroneType(travelTime) {
-    // Choose a drone type based on the travel time. If drone capacity contains kW I am multiply by 1000 to convert it to W.
+  choseDroneType(travelTime) {
+    // Chose a drone type based on the travel time. If drone capacity contains kW I am multiply by 1000 to convert it to W.
     const availableDrones = this.typesOfDrones.filter((droneType) =>
       travelTime *
         parseInt(
@@ -161,8 +156,20 @@ export class DeliveryPlanner {
 
   // Method to add a new order dynamically
   addNewOrder(customerName, customerId, productList) {
-    const newOrder = new Order(customerId, productList);
+    const newOrder = new Order(customerId, "To be delivered!", productList);
     this.orders.push(newOrder);
     return `The new order for customer ${customerName} with product ${productList}is added in queue!`;
+  }
+
+  //Finding order for specific user so he can trank it
+  trackOrder(customerId, time) {
+    const order = this.orders.find((order) => order.customerId === customerId);
+    setTimeout(() => {
+      return "currently in delivery";
+    }, 5000);
+    setTimeout(() => {
+      return "already delivered";
+    }, 30000);
+    return order.status;
   }
 }

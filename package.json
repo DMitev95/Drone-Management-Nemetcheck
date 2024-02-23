@@ -1,5 +1,5 @@
 {
-  "main": "StartUp.js",
+  "main": "index.js",
   "type": "module",
   "name": "dimitar-mitev-nemetschek-rise-2024",
   "description": "To make it easy for you to get started with GitLab, here's a list of recommended next steps.",

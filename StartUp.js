@@ -1,23 +1,23 @@
-import { DeliveryPlanner } from "./DeliveryPlanner.js";
-import { createRequire } from "module";
+// import { DeliveryPlanner } from "./DeliveryPlanner.js";
+// import { createRequire } from "module";
 
-const require = createRequire(import.meta.url);
-const fs = require("fs");
-let data = fs.readFileSync("input.json");
-let input = JSON.parse(data);
+// const require = createRequire(import.meta.url);
+// const fs = require("fs");
+// let data = fs.readFileSync("input.json");
+// let input = JSON.parse(data);
 
-// Create DeliveryPlanner instance
-const deliveryPlanner = new DeliveryPlanner(
-  input["map-top-right-coordinate"],
-  input.products,
-  input.warehouses,
-  input.customers,
-  input.orders,
-  input.typesOfDrones
-);
+// // Create DeliveryPlanner instance
+// const deliveryPlanner = new DeliveryPlanner(
+//   input["map-top-right-coordinate"],
+//   input.products,
+//   input.warehouses,
+//   input.customers,
+//   input.orders,
+//   input.typesOfDrones
+// );
 
-// Start the simulation
-deliveryPlanner.calculateTotalTime();
+// // Start the simulation
+// deliveryPlanner.calculateTotalTime();
 
 // addingNeworder() {
 //   deliveryPlanner.addNewOrder(4, { eggs: 8 })

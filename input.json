@@ -1,4 +1,15 @@
 {
+  "deliveryStatus": {
+    "output": true,
+    "frequency": 30
+  },
+  "output": {
+    "poweredOn": true,
+    "minutes": {
+      "program": 10,
+      "real": 400
+    }
+  },
   "map-top-right-coordinate": { "x": 280, "y": 280 },
   "products": [
     "tomatoes",
