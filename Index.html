@@ -68,12 +68,14 @@
       <input
         id="input-quantity"
         autocomplete="off"
+        type="number"
         placeholder="How much of this product will you need?"
       />
       <button>Send</button>
     </form>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
+    <script src="/orders.js"></script>
+    <!-- <script>
       const socket = io();
       const form = document.getElementById("form");
       const inputName = document.getElementById("input-name");
@@ -102,6 +104,6 @@
         messages.appendChild(item);
         window.scrollTo(0, document.body.scrollHeight);
       });
-    </script>
+    </script> -->
   </body>
 </html>

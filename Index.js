@@ -39,7 +39,8 @@ deliveryPlanner.calculateTotalTime();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 app.get("/", (req, res) => {
-  res.sendFile(join(__dirname, "index.html"));
+  
+  res.sendFile(join(__dirname, "/Index.html"));
 });
 
 //Adding a new order
@@ -52,6 +53,8 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(3000, () => {
+app.use(express.static(__dirname));
+
+server.listen(3030, () => {
   console.log("server running at http://localhost:3000");
 });
