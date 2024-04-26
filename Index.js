@@ -5,6 +5,7 @@ import { dirname, join } from "node:path";
 import { Server } from "socket.io";
 import { DeliveryPlanner } from "./DeliveryPlanner.js";
 import { createRequire } from "module";
+import { Console } from "node:console";
 
 //Reading the input.json file
 const require = createRequire(import.meta.url);
@@ -24,17 +25,13 @@ const deliveryPlanner = new DeliveryPlanner(
   input.warehouses,
   input.customers,
   input.orders,
-  input.typesOfDrones
+  input.typesOfDrones,
+  input.output.minutes.real
 );
+console.log();
 
-const time = input.deliveryStatus;
 // Start the local simulation
-deliveryPlanner.calculateTotalTime();
-// const name = "Dimitar Mitev";
-// const id = Math.random() * name.lenght;
-
-// let message = deliveryPlanner.trackOrder(1, time.frequency);
-// console.log(message);
+deliveryPlanner.setupOrders();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -45,12 +42,13 @@ app.get("/", (req, res) => {
 //Adding a new order
 io.on("connection", (socket) => {
   socket.on("new order", (name, order, quantity) => {
-    const id = Math.random() * name.length;
-    deliveryPlanner.addNewOrder(name, id, { order: quantity });
-    let message = deliveryPlanner.trackOrder(id, time.frequency);
-    socket.emit("chat message", message);
+    const id = name;
+    let message = deliveryPlanner.addNewOrder(name, id, { order: quantity });
+    socket.emit("tracking order", message);
   });
 });
+
+app.use(express.static(__dirname));
 
 server.listen(3000, () => {
   console.log("server running at http://localhost:3000");
